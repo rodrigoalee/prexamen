@@ -1,7 +1,9 @@
 let express = require('express');
 let router = express.Router();
+
 const clienteController = require('../controllers/cliente.controller.js');
 
+// Rutas para la entidad Cliente
 router.post('/api/clientes/create', clienteController.create);
 router.get('/api/clientes/all', clienteController.retrieveAllClientes);
 router.get('/api/clientes/onebyid/:id', clienteController.getClienteById);
