@@ -13,16 +13,21 @@ exports.create = (req, res) => {
         cliente.direccion = req.body.direccion;
         cliente.telefono = req.body.telefono;
         cliente.email = req.body.email;
-        cliente.fechaingreso = req.body.fechaingreso;
         cliente.estatus = req.body.estatus;
-
-        // Guardar el cliente en la base de datos
-        Cliente.create(cliente).then(result => {
-            res.status(200).json({
-                message: "Cliente creado exitosamente con id = " + result.id_cliente,
-                cliente: result,
+    
+        Cliente.create(cliente)
+            .then(result => {
+                res.status(200).json({
+                    message: "Cliente creado exitosamente con id = " + result.id_cliente,
+                    cliente: result,
+                });
+            })
+            .catch(error => {
+                res.status(500).json({
+                    message: "¡Error al crear el cliente!",
+                    error: error.message
+                });
             });
-        });
     } catch (error) {
         res.status(500).json({
             message: "¡Error al crear el cliente!",
@@ -54,10 +59,17 @@ exports.getClienteById = (req, res) => {
     let clienteId = req.params.id;
     Cliente.findByPk(clienteId)
         .then(cliente => {
-            res.status(200).json({
-                message: "Cliente obtenido exitosamente con id = " + clienteId,
-                cliente: cliente
-            });
+            if (cliente) {
+                res.status(200).json({
+                    message: "Cliente obtenido exitosamente con id = " + clienteId,
+                    cliente: cliente
+                });
+            } else {
+                res.status(404).json({
+                    message: "No se encontró el cliente con id = " + clienteId,
+                    cliente: null
+                });
+            }
         })
         .catch(error => {
             console.log(error);
@@ -77,7 +89,7 @@ exports.updateById = async (req, res) => {
         if (!cliente) {
             res.status(404).json({
                 message: "No se encontró el cliente con id = " + clienteId,
-                cliente: "",
+                cliente: null,
                 error: "404"
             });
         } else {
@@ -88,23 +100,23 @@ exports.updateById = async (req, res) => {
                 direccion: req.body.direccion,
                 telefono: req.body.telefono,
                 email: req.body.email,
-                fechaingreso: req.body.fechaingreso,
+                fechaingreso: req.body.fechaingreso, // Añadido si también se desea actualizar la fecha de ingreso
                 estatus: req.body.estatus
             };
 
             let result = await Cliente.update(updatedObject, { returning: true, where: { id_cliente: clienteId } });
 
-            if (!result) {
+            if (result[0] === 0) {
                 res.status(500).json({
-                    message: "¡Error! No se pudo actualizar el cliente con id = " + req.params.id,
+                    message: "¡Error! No se pudo actualizar el cliente con id = " + clienteId,
                     error: "No se pudo actualizar",
                 });
+            } else {
+                res.status(200).json({
+                    message: "Cliente actualizado exitosamente con id = " + clienteId,
+                    cliente: updatedObject,
+                });
             }
-
-            res.status(200).json({
-                message: "Cliente actualizado exitosamente con id = " + clienteId,
-                cliente: updatedObject,
-            });
         }
     } catch (error) {
         res.status(500).json({
