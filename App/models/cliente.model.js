@@ -12,10 +12,6 @@ module.exports = (sequelize, Sequelize) => {
         apellido: {
             type: Sequelize.STRING
         },
-        razon_social: {
-            type: Sequelize.STRING
-        },
-        
         nit: {
             type: Sequelize.STRING
         },
