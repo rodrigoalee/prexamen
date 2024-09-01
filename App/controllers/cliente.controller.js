@@ -6,7 +6,6 @@ exports.create = (req, res) => {
     let cliente = {};
 
     try {
-        // Asignar valores del cuerpo de la solicitud al objeto cliente
         cliente.nombre = req.body.nombre;
         cliente.apellido = req.body.apellido;
         cliente.nit = req.body.nit;
@@ -31,7 +30,7 @@ exports.create = (req, res) => {
     }
 };
 
-// Recuperar todos los clientes
+
 exports.retrieveAllClientes = (req, res) => {
     Cliente.findAll()
         .then(clienteInfos => {
@@ -49,7 +48,6 @@ exports.retrieveAllClientes = (req, res) => {
         });
 };
 
-// Recuperar un cliente por ID
 exports.getClienteById = (req, res) => {
     let clienteId = req.params.id;
     Cliente.findByPk(clienteId)
@@ -68,7 +66,7 @@ exports.getClienteById = (req, res) => {
         });
 };
 
-// Actualizar un cliente por ID
+
 exports.updateById = async (req, res) => {
     try {
         let clienteId = req.params.id;
