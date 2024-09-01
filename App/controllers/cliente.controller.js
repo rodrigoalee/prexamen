@@ -1,21 +1,20 @@
 const db = require('../config/db.config.js');
 const Cliente = db.Cliente;
 
-// Crear un nuevo cliente
 exports.create = (req, res) => {
     let cliente = {};
 
     try {
         cliente.nombre = req.body.nombre;
         cliente.apellido = req.body.apellido;
+        cliente.razon_social = req.body.razon_social;
         cliente.nit = req.body.nit;
         cliente.direccion = req.body.direccion;
         cliente.telefono = req.body.telefono;
         cliente.email = req.body.email;
-        cliente.fechaingreso = req.body.fechaingreso;
+        cliente.fecha_ingreso = req.body.fecha_ingreso;
         cliente.estatus = req.body.estatus;
 
-        // Guardar el cliente en la base de datos
         Cliente.create(cliente).then(result => {
             res.status(200).json({
                 message: "Cliente creado exitosamente con id = " + result.id_cliente,
@@ -24,18 +23,17 @@ exports.create = (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: "¡Error al crear el cliente!",
+            message: "¡Fallo al crear el cliente!",
             error: error.message
         });
     }
 };
 
-
 exports.retrieveAllClientes = (req, res) => {
     Cliente.findAll()
         .then(clienteInfos => {
             res.status(200).json({
-                message: "Información de todos los clientes obtenida exitosamente",
+                message: "¡Clientes obtenidos exitosamente!",
                 clientes: clienteInfos
             });
         })
@@ -60,59 +58,57 @@ exports.getClienteById = (req, res) => {
         .catch(error => {
             console.log(error);
             res.status(500).json({
-                message: "¡Error al obtener el cliente!",
+                message: "¡Error al obtener cliente con id!",
                 error: error
             });
         });
 };
 
-
 exports.updateById = async (req, res) => {
     try {
         let clienteId = req.params.id;
         let cliente = await Cliente.findByPk(clienteId);
-
+    
         if (!cliente) {
             res.status(404).json({
-                message: "No se encontró el cliente con id = " + clienteId,
+                message: "No se encontró el cliente para actualizar con id = " + clienteId,
                 cliente: "",
                 error: "404"
             });
-        } else {
+        } else {    
             let updatedObject = {
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
+                razon_social: req.body.razon_social,
                 nit: req.body.nit,
                 direccion: req.body.direccion,
                 telefono: req.body.telefono,
                 email: req.body.email,
-                fechaingreso: req.body.fechaingreso,
+                fecha_ingreso: req.body.fecha_ingreso,
                 estatus: req.body.estatus
-            };
-
-            let result = await Cliente.update(updatedObject, { returning: true, where: { id_cliente: clienteId } });
-
+            }
+            let result = await Cliente.update(updatedObject, {returning: true, where: {id_cliente: clienteId}});
+            
             if (!result) {
                 res.status(500).json({
-                    message: "¡Error! No se pudo actualizar el cliente con id = " + req.params.id,
-                    error: "No se pudo actualizar",
+                    message: "No se puede actualizar el cliente con id = " + req.params.id,
+                    error: "No se pudo actualizar el cliente",
                 });
-            }
+            };
 
             res.status(200).json({
-                message: "Cliente actualizado exitosamente con id = " + clienteId,
+                message: "Actualización exitosa de un cliente con id = " + clienteId,
                 cliente: updatedObject,
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: "¡Error! No se pudo actualizar el cliente con id = " + req.params.id,
+            message: "No se puede actualizar el cliente con id = " + req.params.id,
             error: error.message
         });
     }
 };
 
-// Eliminar un cliente por ID
 exports.deleteById = async (req, res) => {
     try {
         let clienteId = req.params.id;
@@ -120,19 +116,19 @@ exports.deleteById = async (req, res) => {
 
         if (!cliente) {
             res.status(404).json({
-                message: "No existe un cliente con id = " + clienteId,
+                message: "No existe el cliente con id = " + clienteId,
                 error: "404",
             });
         } else {
             await cliente.destroy();
             res.status(200).json({
-                message: "Cliente eliminado exitosamente con id = " + clienteId,
+                message: "Eliminación exitosa del cliente con id = " + clienteId,
                 cliente: cliente,
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: "¡Error! No se pudo eliminar el cliente con id = " + req.params.id,
+            message: "No se puede eliminar el cliente con id = " + req.params.id,
             error: error.message,
         });
     }
