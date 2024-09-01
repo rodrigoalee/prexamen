@@ -5,6 +5,7 @@ exports.create = (req, res) => {
     let cliente = {};
 
     try {
+
         cliente.nombre = req.body.nombre;
         cliente.apellido = req.body.apellido;
         cliente.razon_social = req.body.razon_social;
