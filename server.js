@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./App/config/db.config.js');
-const router = require('./App/routes/router.js');
+const router = require('./App/routers/router.js');
 
 
 const corsOptions = {

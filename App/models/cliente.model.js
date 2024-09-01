@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const Cliente = sequelize.define('cliente', {
         idcliente: {
-            type: Sequelize.INTEGER, autoincrement: true, primaryKey: true},
+            type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true},
         nombre: {
             type: Sequelize.STRING},
         apellido: {
@@ -13,11 +13,11 @@ module.exports = (sequelize, Sequelize) => {
         telefono: {
             type: Sequelize.STRING},
         email: {
-            type: sequelize.STRING},
-        Estatus: { 
+            type: Sequelize.STRING},
+        estatus: { 
             type: Sequelize.INTEGER}
         
     });
 
-    return Departamento;
+    return Cliente;
 }
