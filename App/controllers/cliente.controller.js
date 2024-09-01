@@ -12,7 +12,7 @@ exports.create = (req, res) => {
         cliente.direccion = req.body.direccion;
         cliente.telefono = req.body.telefono;
         cliente.email = req.body.email;
-        cliente.fecha_ingreso = req.body.fecha_ingreso;
+        cliente.fechaingreso = req.body.fechaingreso;
         cliente.estatus = req.body.estatus;
 
         Cliente.create(cliente).then(result => {

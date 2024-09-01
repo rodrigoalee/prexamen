@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
         email:{
             type: Sequelize.STRING
         },
-        fecha_ingreso:{
+        fechaingreso:{
             type: Sequelize.DATE
         },
         estatus:{
